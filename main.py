@@ -60,4 +60,35 @@ def gradientDescent(theta, X, y):
     a = (X.T).dot((sigmoid(X.dot(theta)) - y))
     return (1 / len(X)) * a
 
-print(gradientDescent(theta,X,y))
+
+print(gradientDescent(theta, X, y))
+
+import scipy.optimize as opt
+from sklearn.metrics import classification_report
+
+res = opt.minimize(fun=cost, x0=theta, args=(X, y), method='Newton-CG', jac=gradientDescent)
+print(res)
+
+
+def predict(x, theta):
+    prob = sigmoid(x.dot(theta))
+    return (prob >= 0.5).astype(int)
+
+
+final_theta = res.x
+y_pred = predict(X, final_theta)
+print(classification_report(y, y_pred))
+
+print(res.x)
+coef = -(res.x / res.x[2])
+print(coef)
+
+x = np.arange(130, step=0.1)
+y = coef[0] + coef[1] * x
+
+sns.set(context='notebook')  # style='ticks'
+sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data, height=6, fit_reg=False, scatter_kws={"s": 50})
+plt.plot(x, y, 'r')
+plt.xlim(25, 105)
+plt.ylim(25, 105)
+plt.show()
