@@ -1,25 +1,27 @@
+'''
+建立分类器（求解θ0、θ1、θ2）
+'''
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-plt.style.use('fivethirtyeight')
-
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
-# print(data.head())
+print(data.head())
 
-sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
-sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data, height=6, fit_reg=False, scatter_kws={"s": 50})
-plt.show()
+# sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
+# sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data,
+#            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
+# plt.show()
 
 
-def get_X(df):
+def get_X(df):#读取特征
     ones = pd.DataFrame({'ones': np.ones(len(df))})
     data = pd.concat([ones, df], axis=1)
     return data.iloc[:, :-1].iloc[:, :].values
 
 
-def get_y(df):
+def get_y(df):#读取标签
     return np.array(df.iloc[:, -1])
 
 
@@ -28,11 +30,13 @@ def normalize_feature(df):
 
 
 X = get_X(data)
-print(X.shape)
 y = get_y(data)
-print(y.shape)
+print(X.shape)  #100*3
+print(y.shape)  #100*1
+print(X)
+print(y)
 
-
+'''
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
@@ -89,6 +93,7 @@ y = coef[0] + coef[1] * x
 sns.set(context='notebook')  # style='ticks'
 sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data, height=6, fit_reg=False, scatter_kws={"s": 50})
 plt.plot(x, y, 'r')
-plt.xlim(25, 105)
-plt.ylim(25, 105)
+plt.xlim(27, 102)
+plt.ylim(27, 102)
 plt.show()
+'''
