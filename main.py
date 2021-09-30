@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
-print(data.head())
-
+# print(data.head())
 # sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
 # sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data,
 #            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
