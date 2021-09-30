@@ -14,7 +14,7 @@ data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 #            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
 # plt.show()
 
-# data.insert(0, 'Ones', 1)
+data.insert(0, 'Ones', 1)
 # print(data.head())
 
 def get_X(df):  # 读取特征
@@ -33,22 +33,24 @@ def normalize_feature(df):  # 特征缩放
 
 X = get_X(data)
 y = get_y(data)
-print(X.shape)  # 100*3
-print(y.shape)  # 100*1
-print(X)
-print(y)
 
-'''
+
+# print(X.shape)  # 100*3
+# print(y.shape)  # 100*1
+# print(X)
+# print(y)
+
+
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
+'''
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.plot(np.arange(-10, 10, step=0.01), sigmoid(np.arange(-10, 10, step=0.01)))
 ax.set_ylim(-0.1, 1.1)
-
 plt.show()
-
+'''
 theta = np.zeros(3)
 print(theta)
 
@@ -61,7 +63,7 @@ def cost(theta, X, y):
 
 print(cost(theta, X, y))
 
-
+'''
 def gradientDescent(theta, X, y):
     a = (X.T).dot((sigmoid(X.dot(theta)) - y))
     return (1 / len(X)) * a
