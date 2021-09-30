@@ -7,31 +7,34 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
-# print(data.head())
+
+
 # sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
 # sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data,
 #            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
 # plt.show()
 
+# data.insert(0, 'Ones', 1)
+# print(data.head())
 
-def get_X(df):#读取特征
-    ones = pd.DataFrame({'ones': np.ones(len(df))})
-    data = pd.concat([ones, df], axis=1)
+def get_X(df):  # 读取特征
+    # ones = pd.DataFrame({'ones': np.ones(len(df))}) #插入1列1
+    # data = pd.concat([ones, df], axis=1)
     return data.iloc[:, :-1].iloc[:, :].values
 
 
-def get_y(df):#读取标签
+def get_y(df):  # 读取标签
     return np.array(df.iloc[:, -1])
 
 
-def normalize_feature(df):
+def normalize_feature(df):  # 特征缩放
     return df.apply(lambda column: (column - column.mean()) / column.std())
 
 
 X = get_X(data)
 y = get_y(data)
-print(X.shape)  #100*3
-print(y.shape)  #100*1
+print(X.shape)  # 100*3
+print(y.shape)  # 100*1
 print(X)
 print(y)
 
