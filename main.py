@@ -11,6 +11,7 @@ from functions import get_y
 from functions import cost
 from functions import gradientDescent
 
+λ = 0.01
 '''
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data.head())
@@ -106,27 +107,27 @@ print(y.shape)
 
 
 # 正则化代价
-def regularized_cost(theta, x, y, λ):
+def regularized_cost(theta, x, y, λ=λ):
     theta_j1_to_n = theta[1:]
     regularized_term = (λ / (2 * len(x))) * np.power(theta_j1_to_n, 2).sum()
     return cost(theta, x, y) + regularized_term
 
 
-print(regularized_cost(theta, x, y))
+print(regularized_cost(theta, x, y, λ=λ))
 
 
 # 正则化梯度
-def regularized_gradient(theta, x, y,λ):
+def regularized_gradient(theta, x, y, λ=λ):
     theta_j1_to_n = theta[1:]  # 不加theta0
-    regularized_theta = (1 / len(x)) * theta_j1_to_n
+    regularized_theta = (λ / len(x)) * theta_j1_to_n
 
     regularized_term = np.concatenate([np.array([0]), regularized_theta])
     return gradientDescent(theta, x, y) + regularized_term
 
 
-print(regularized_gradient(theta, x, y))
+print(regularized_gradient(theta, x, y, λ=λ))
 
-print('init cost ={}'.format(regularized_cost(theta, x, y)))
+print('init cost ={}'.format(regularized_cost(theta, x, y, λ)))
 res = opt.minimize(fun=regularized_cost, x0=theta, args=(x, y), method='Newton-CG', jac=regularized_gradient)
 print(res)
 
@@ -173,4 +174,4 @@ def find_decision_boundary(density, power, theta, threshhold):
     return decision.f10, decision.f01
 
 
-draw_boundary(power=5, 5)
+draw_boundary(power=5, λ=λ)
