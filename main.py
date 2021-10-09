@@ -7,6 +7,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.optimize as opt
 from sklearn.metrics import classification_report
+from functions import get_y
+from functions import cost
+
+
+
+
 '''
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data.head())
@@ -18,16 +24,10 @@ data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 data.insert(0, 'Ones', 1)
 
 
-def get_X(df):  # 读取特征
-    return np.array(df.iloc[:, :-1])
 
 
-def get_y(df):  # 读取标签
-    return np.array(df.iloc[:, -1])
 
 
-def normalize_feature(df):  # 特征缩放
-    return df.apply(lambda column: (column - column.mean()) / column.std())
 
 
 X = get_X(data)
@@ -40,8 +40,7 @@ y = get_y(data)
 # print(y)
 
 
-def sigmoid(z):
-    return 1 / (1 + np.exp(-z))
+
 
 
 
@@ -56,10 +55,7 @@ theta = np.zeros(3)
 # print(theta)
 
 
-def cost(theta, X, y):
-    a = -y * np.log(sigmoid(np.dot(X, theta)))  # -log(hθ(x))
-    b = (1 - y) * np.log(1 - sigmoid(np.dot(X, theta)))  # -log(1-h(θ))
-    return np.mean(a - b)
+
 
 
 print(cost(theta, X, y))
@@ -103,22 +99,37 @@ plt.show()
 data = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
 sns.lmplot(x='test1', y='test2', hue='accepted', data=data,
-            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
+           height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
 plt.show()
 
-def feature_mapping(x,y,power,as_ndarray=False):
-    data = {"f{}{}".format(i-p,p):np.power(x,i-p)*np.power(y,p)
-            for i in np.arange(power+1)
-            for p in np.arange(i+1)
+
+def feature_mapping(x, y, power, as_ndarray=False):
+    data = {"f{}{}".format(i - p, p): np.power(x, i - p) * np.power(y, p)
+            for i in np.arange(power + 1)
+            for p in np.arange(i + 1)
             }
     if as_ndarray:
         return pd.DataFrame(data).as_matrix()
     else:
         return pd.DataFrame(data)
 
-x1=np.array(data.test1)
-x2=np.array(data.test2)
 
-data = feature_mapping(x1,x2,power=6)
+x1 = np.array(data.test1)
+x2 = np.array(data.test2)
+
+df = feature_mapping(x1, x2, power=6)
 # print(data.shape)
 # print(data.head())
+theta = np.zeros(df.shape[1])
+x = feature_mapping(x1, x2, power=6)
+print(x.shape)
+y = get_y(data)
+print(y.shape)
+
+
+def regularized_cost(theta, x, y):
+    theta_j1_to_n = theta[1:]
+    regularized_term = (1 / (2 * len(x))) * np.power(theta_j1_to_n, 2).sum()
+    return cost(theta, x, y) + regularized_term
+
+print(regularized_cost(theta,x,y))
