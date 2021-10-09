@@ -57,8 +57,8 @@ theta = np.zeros(3)
 
 
 def cost(theta, X, y):
-    a = -y * np.log(sigmoid(np.dot(X, theta)))
-    b = (1 - y) * np.log(1 - sigmoid(np.dot(X, theta)))
+    a = -y * np.log(sigmoid(np.dot(X, theta)))  # -log(hθ(x))
+    b = (1 - y) * np.log(1 - sigmoid(np.dot(X, theta)))  # -log(1-h(θ))
     return np.mean(a - b)
 
 
