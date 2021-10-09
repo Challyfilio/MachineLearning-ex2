@@ -2,17 +2,13 @@
 建立分类器（求解θ0、θ1、θ2）
 '''
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.optimize as opt
-from sklearn.metrics import classification_report
-from functions import get_y
-from functions import cost
-from functions import gradientDescent
+from functions import *
 
 λ = 0.01
-'''
+
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data.head())
 # sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
@@ -22,7 +18,7 @@ data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 
 data.insert(0, 'Ones', 1)
 
-X = get_X(data)
+x = get_x(data)
 y = get_y(data)
 
 # print(X.shape)  # 100*3
@@ -30,35 +26,20 @@ y = get_y(data)
 # print(X)
 # print(y)
 
-
-# fig, ax = plt.subplots(figsize=(8, 6))
-# ax.plot(np.arange(-10, 10, step=0.01), sigmoid(np.arange(-10, 10, step=0.01)))
-# ax.set_ylim(-0.1, 1.1)
-# plt.show()
-
 theta = np.zeros(3)
-
 # print(theta)
 
+print(cost(theta, x, y))
 
-print(cost(theta, X, y))
-
-print(gradientDescent(theta, X, y))
+print(gradientDescent(theta, x, y))
 # 拟合参数
-res = opt.minimize(fun=cost, x0=theta, args=(X, y), method='Newton-CG', jac=gradientDescent)
+res = opt.minimize(fun=cost, x0=theta, args=(x, y), method='Newton-CG', jac=gradientDescent)
 print(res)
 
-
-def predict(x, theta):
-    prob = sigmoid(np.dot(x, theta))
-    return (prob >= 0.5).astype(int)
-
-
 final_theta = res.x
-y_pred = predict(X, final_theta)
-print(classification_report(y, y_pred))
-
+y_pred = predict(x, final_theta)
 print(res.x)
+
 # 寻找决策边界
 coef = -(res.x / res.x[2])
 print('coef', coef)
@@ -72,6 +53,8 @@ plt.plot(x, y, 'r')
 plt.xlim(27, 102)
 plt.ylim(27, 102)
 plt.show()
+
+# data2
 '''
 data = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 
@@ -175,3 +158,4 @@ def find_decision_boundary(density, power, theta, threshhold):
 
 
 draw_boundary(power=5, λ=λ)
+'''
