@@ -106,3 +106,19 @@ sns.lmplot(x='test1', y='test2', hue='accepted', data=data,
             height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
 plt.show()
 
+def feature_mapping(x,y,power,as_ndarray=False):
+    data = {"f{}{}".format(i-p,p):np.power(x,i-p)*np.power(y,p)
+            for i in np.arange(power+1)
+            for p in np.arange(i+1)
+            }
+    if as_ndarray:
+        return pd.DataFrame(data).as_matrix()
+    else:
+        return pd.DataFrame(data)
+
+x1=np.array(data.test1)
+x2=np.array(data.test2)
+
+data = feature_mapping(x1,x2,power=6)
+# print(data.shape)
+# print(data.head())
