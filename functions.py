@@ -2,7 +2,7 @@ import numpy as np
 
 
 # 读取特征
-def get_X(df):
+def get_x(df):
     return np.array(df.iloc[:, :-1])
 
 
@@ -20,13 +20,18 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
-def cost(theta, X, y):
-    a = -y * np.log(sigmoid(np.dot(X, theta)))  # -log(hθ(x))
-    b = (1 - y) * np.log(1 - sigmoid(np.dot(X, theta)))  # -log(1-h(θ))
+def cost(theta, x, y):
+    a = -y * np.log(sigmoid(np.dot(x, theta)))  # -log(hθ(x))
+    b = (1 - y) * np.log(1 - sigmoid(np.dot(x, theta)))  # -log(1-h(θ))
     return np.mean(a - b)
 
 
 # 梯度下降
-def gradientDescent(theta, X, y):
-    a = np.dot(X.T, (sigmoid(np.dot(X, theta)) - y))
-    return (1 / len(X)) * a
+def gradientDescent(theta, x, y):
+    a = np.dot(x.T, (sigmoid(np.dot(x, theta)) - y))
+    return (1 / len(x)) * a
+
+
+def predict(x, theta):
+    prob = sigmoid(np.dot(x, theta))
+    return (prob >= 0.5).astype(int)
