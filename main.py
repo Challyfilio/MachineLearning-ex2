@@ -9,9 +9,7 @@ import scipy.optimize as opt
 from sklearn.metrics import classification_report
 from functions import get_y
 from functions import cost
-
-
-
+from functions import gradientDescent
 
 '''
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
@@ -23,25 +21,13 @@ data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 
 data.insert(0, 'Ones', 1)
 
-
-
-
-
-
-
-
 X = get_X(data)
 y = get_y(data)
-
 
 # print(X.shape)  # 100*3
 # print(y.shape)  # 100*1
 # print(X)
 # print(y)
-
-
-
-
 
 
 # fig, ax = plt.subplots(figsize=(8, 6))
@@ -51,20 +37,10 @@ y = get_y(data)
 
 theta = np.zeros(3)
 
-
 # print(theta)
 
 
-
-
-
 print(cost(theta, X, y))
-
-
-def gradientDescent(theta, X, y):
-    a = np.dot(X.T, (sigmoid(np.dot(X, theta)) - y))
-    return (1 / len(X)) * a
-
 
 print(gradientDescent(theta, X, y))
 # 拟合参数
@@ -127,9 +103,24 @@ y = get_y(data)
 print(y.shape)
 
 
+# 正则化代价
 def regularized_cost(theta, x, y):
     theta_j1_to_n = theta[1:]
     regularized_term = (1 / (2 * len(x))) * np.power(theta_j1_to_n, 2).sum()
     return cost(theta, x, y) + regularized_term
 
-print(regularized_cost(theta,x,y))
+
+print(regularized_cost(theta, x, y))
+
+
+# 正则化梯度
+def regularized_gradient(theta, x, y):
+    theta_j1_to_n = theta[1:]  # 不加theta0
+    regularized_theta = (1 / len(x)) * theta_j1_to_n
+
+    regularized_term = np.concatenate([np.array([0]), regularized_theta])
+    return gradientDescent(theta, x, y) + regularized_term
+
+print(regularized_gradient(theta,x,y))
+
+print()
