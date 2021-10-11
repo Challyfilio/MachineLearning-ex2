@@ -23,13 +23,13 @@ def sigmoid(z):
 # 代价函数
 def cost(theta, x, y):
     a = -y * np.log(sigmoid(np.dot(x, theta)))  # -ylog(hθ(x))
-    b = (1 - y) * np.log(1 - sigmoid(np.dot(x, theta)))  # -(1-y)log(1-h(θ))
+    b = (1 - y) * np.log(1 - sigmoid(np.dot(x, theta)))  # (1-y)log(1-h(θ))
     return np.mean(a - b)
 
 
 # 梯度下降
 def gradientDescent(theta, x, y):
-    a = np.dot(x.T, (sigmoid(np.dot(x, theta)) - y))
+    a = np.dot(x.T, (sigmoid(np.dot(x, theta)) - y))  # (hθ(x)-y)x
     return (1 / len(x)) * a
 
 
