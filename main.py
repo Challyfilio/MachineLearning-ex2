@@ -7,7 +7,6 @@ import seaborn as sns
 import scipy.optimize as opt
 from functions import *
 
-λ = 0
 # Logistic Regression
 # data1
 '''
@@ -60,6 +59,9 @@ plt.show()
 
 # Regularized logistic regression
 # data2
+λ = 1
+power = 5
+
 data2 = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 # sns.lmplot(x='test1', y='test2', hue='accepted', data=data,
 #            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
@@ -82,7 +84,6 @@ def feature_mapping(x, y, power, as_ndarray=False):
         return pd.DataFrame(data)
 
 
-power = 5
 x = feature_mapping(x1, x2, power)
 theta = np.zeros(x.shape[1])
 
@@ -109,11 +110,8 @@ def Regularized_gradient(theta, x, y, λ=λ):
 
 res = opt.minimize(fun=Regularized_cost, x0=theta, args=(x, y), method='TNC', jac=Regularized_gradient)
 final_theta = res.x
+# print(res.x)
 
-
-# print('init cost ={}'.format(regularized_cost(theta, x, y, λ)))
-# res = opt.minimize(fun=regularized_cost, x0=theta, args=(x, y), method='Newton-CG', jac=regularized_gradient)
-# print(res)
 
 # 寻找决策边界
 def find_decision_boundary(density, power, theta, threshhold):
@@ -122,13 +120,15 @@ def find_decision_boundary(density, power, theta, threshhold):
 
     cordinates = [(x, y) for x in t1 for y in t2]
     x_cord, y_cord = zip(*cordinates)
+
     mapped_cord = feature_mapping(x_cord, y_cord, power)
     inner_product = mapped_cord.values.dot(theta)
     decision = mapped_cord[np.abs(inner_product) < threshhold]
+    print(decision)
     return decision.f10, decision.f01
 
 
-def draw_boundary(power, final_theta, λ):
+def draw_boundary(power, final_theta):
     density = 1000
     threshhold = 2 * 10 ** -3
 
@@ -140,4 +140,4 @@ def draw_boundary(power, final_theta, λ):
     plt.show()
 
 
-draw_boundary(power, final_theta, λ)
+draw_boundary(power, final_theta)
