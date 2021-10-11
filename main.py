@@ -9,7 +9,7 @@ from functions import *
 
 λ = 0
 # data1
-'''
+
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data.head())
 # sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
@@ -54,9 +54,9 @@ plt.plot(x, y, 'r')
 plt.xlim(27, 102)
 plt.ylim(27, 102)
 plt.show()
-'''
+
 # data2
-# '''
+'''
 data = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 
 
@@ -146,4 +146,4 @@ def draw_boundary(power, λ):
 
 
 draw_boundary(power=5, λ=λ)
-# '''
+'''
