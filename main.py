@@ -8,19 +8,18 @@ import scipy.optimize as opt
 from functions import *
 
 λ = 0
-# data1
+# Logistic Regression
 
-data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
-# print(data.head())
-# sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
-# sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data,
+data1 = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
+# print(data1.head())
+# sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data1,
 #            height=6, fit_reg=False, scatter_kws={"s": 50})  # fit_reg:是否显示拟合曲线
 # plt.show()
 
-data.insert(0, 'Ones', 1)
+data1.insert(0, 'Ones', 1)
 
-x = get_x(data)
-y = get_y(data)
+x = get_x(data1)
+y = get_y(data1)
 
 # print(X.shape)  # 100*3
 # print(y.shape)  # 100*1
@@ -28,32 +27,37 @@ y = get_y(data)
 # print(y)
 
 theta = np.zeros(3)
-# print(theta)
-
+# sigmoid
+# cost
 print(cost(theta, x, y))
-
+# gradientDescent
 print(gradientDescent(theta, x, y))
+
 # 拟合参数
 res = opt.minimize(fun=cost, x0=theta, args=(x, y), method='Newton-CG', jac=gradientDescent)
 print(res)
 
-# final_theta = res.x
-# y_pred = predict(x, final_theta)
-# print(res.x)
+# 预测
+final_theta = res.x
+y_pred = predict(x, final_theta)
+print(y_pred)
 
 # 寻找决策边界
+print(res.x)
 coef = -(res.x / res.x[2])
 print('coef', coef)
 
 x = np.arange(150, step=0.1)
 y = coef[0] + coef[1] * x
-
+'''
 sns.set(context='notebook')  # style='ticks'
 sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data, height=6, fit_reg=False, scatter_kws={"s": 50})
 plt.plot(x, y, 'r')
 plt.xlim(27, 102)
 plt.ylim(27, 102)
 plt.show()
+
+'''
 
 # data2
 '''
