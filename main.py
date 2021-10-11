@@ -7,8 +7,9 @@ import seaborn as sns
 import scipy.optimize as opt
 from functions import *
 
-λ = 0.01
-
+λ = 0
+# data1
+'''
 data = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data.head())
 # sns.set(context="notebook", style="darkgrid", palette=sns.color_palette("RdBu", 2))
@@ -36,9 +37,9 @@ print(gradientDescent(theta, x, y))
 res = opt.minimize(fun=cost, x0=theta, args=(x, y), method='Newton-CG', jac=gradientDescent)
 print(res)
 
-final_theta = res.x
-y_pred = predict(x, final_theta)
-print(res.x)
+# final_theta = res.x
+# y_pred = predict(x, final_theta)
+# print(res.x)
 
 # 寻找决策边界
 coef = -(res.x / res.x[2])
@@ -53,9 +54,9 @@ plt.plot(x, y, 'r')
 plt.xlim(27, 102)
 plt.ylim(27, 102)
 plt.show()
-
-# data2
 '''
+# data2
+# '''
 data = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 
 
@@ -76,19 +77,6 @@ def feature_mapping(x, y, power, as_ndarray=False):
         return pd.DataFrame(data)
 
 
-x1 = np.array(data.test1)
-x2 = np.array(data.test2)
-
-df = feature_mapping(x1, x2, power=6)
-# print(data.shape)
-# print(data.head())
-theta = np.zeros(df.shape[1])
-x = feature_mapping(x1, x2, power=6)
-print(x.shape)
-y = get_y(data)
-print(y.shape)
-
-
 # 正则化代价
 def regularized_cost(theta, x, y, λ=λ):
     theta_j1_to_n = theta[1:]
@@ -96,7 +84,7 @@ def regularized_cost(theta, x, y, λ=λ):
     return cost(theta, x, y) + regularized_term
 
 
-print(regularized_cost(theta, x, y, λ=λ))
+# print(regularized_cost(theta, x, y, λ=λ))
 
 
 # 正则化梯度
@@ -108,24 +96,11 @@ def regularized_gradient(theta, x, y, λ=λ):
     return gradientDescent(theta, x, y) + regularized_term
 
 
-print(regularized_gradient(theta, x, y, λ=λ))
+# print(regularized_gradient(theta, x, y, λ=λ))
 
-print('init cost ={}'.format(regularized_cost(theta, x, y, λ)))
-res = opt.minimize(fun=regularized_cost, x0=theta, args=(x, y), method='Newton-CG', jac=regularized_gradient)
-print(res)
-
-
-def draw_boundary(power, λ):
-    density = 1000
-    threshhold = 2 * 10 ** -3
-    final_theta = feature_mapped_logistic_regression(power)
-    x, y = find_decision_boundary(density, power, final_theta, threshhold)
-
-    df = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
-    sns.lmplot('test1', 'test2', hue='accepted', data=df, height=6, fit_reg=False, scatter_kws={"s": 100})
-
-    plt.scatter(x, y, c='r', s=10)
-    plt.show()
+# print('init cost ={}'.format(regularized_cost(theta, x, y, λ)))
+# res = opt.minimize(fun=regularized_cost, x0=theta, args=(x, y), method='Newton-CG', jac=regularized_gradient)
+# print(res)
 
 
 def feature_mapped_logistic_regression(power):
@@ -157,5 +132,18 @@ def find_decision_boundary(density, power, theta, threshhold):
     return decision.f10, decision.f01
 
 
+def draw_boundary(power, λ):
+    density = 1000
+    threshhold = 2 * 10 ** -3
+    final_theta = feature_mapped_logistic_regression(power)
+    x, y = find_decision_boundary(density, power, final_theta, threshhold)
+
+    df = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
+    sns.lmplot(x='test1', y='test2', hue='accepted', data=df, height=6, fit_reg=False, scatter_kws={"s": 100})
+
+    plt.scatter(x, y, c='r', s=10)
+    plt.show()
+
+
 draw_boundary(power=5, λ=λ)
-'''
+# '''
