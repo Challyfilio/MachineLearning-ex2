@@ -9,7 +9,8 @@ from functions import *
 
 λ = 0
 # Logistic Regression
-
+# data1
+'''
 data1 = pd.read_csv('ex2data1.txt', names=['exam1', 'exam2', 'admitted'])
 # print(data1.head())
 # sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data1,
@@ -49,18 +50,16 @@ print('coef', coef)
 
 x = np.arange(150, step=0.1)
 y = coef[0] + coef[1] * x
-'''
-sns.set(context='notebook')  # style='ticks'
-sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data, height=6, fit_reg=False, scatter_kws={"s": 50})
+
+sns.lmplot(x='exam1', y='exam2', hue='admitted', data=data1, height=6, fit_reg=False, scatter_kws={"s": 50})
 plt.plot(x, y, 'r')
 plt.xlim(27, 102)
 plt.ylim(27, 102)
 plt.show()
-
 '''
 
+# Regularized logistic regression
 # data2
-'''
 data = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'accepted'])
 
 
@@ -150,4 +149,3 @@ def draw_boundary(power, λ):
 
 
 draw_boundary(power=5, λ=λ)
-'''
