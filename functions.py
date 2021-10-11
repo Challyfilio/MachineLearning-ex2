@@ -20,9 +20,10 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
+# 代价函数
 def cost(theta, x, y):
-    a = -y * np.log(sigmoid(np.dot(x, theta)))  # -log(hθ(x))
-    b = (1 - y) * np.log(1 - sigmoid(np.dot(x, theta)))  # -log(1-h(θ))
+    a = -y * np.log(sigmoid(np.dot(x, theta)))  # -ylog(hθ(x))
+    b = (1 - y) * np.log(1 - sigmoid(np.dot(x, theta)))  # -(1-y)log(1-h(θ))
     return np.mean(a - b)
 
 
